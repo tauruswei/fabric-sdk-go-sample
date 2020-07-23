@@ -6,7 +6,7 @@ import (
 )
 
 const (
-	cfgPath = "/opt/go/src/github.com/hyperledger/fabric-sdk-go-sample/config/config.yaml"
+	cfgPath = "../config/config.yaml"
 )
 
 var (
