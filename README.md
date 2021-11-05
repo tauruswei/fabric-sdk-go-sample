@@ -1,20 +1,19 @@
 Fabric sdk go sample
 ==========
-基于 fabric-samples/first-network启动的网络,通过使用 fabric-sdk-go 来操作链码的例子
+基于 fabric-samples/test-network启动的网络,通过使用 fabric-sdk-go 来操作链码的例子,
 #
 `environment:`      
-`golang v1.13.4`  `fabric v1.4.2`  `fabric-samples v1.4.2`
+`golang v1.14.12`  `fabric v2.2.2`  `fabric-samples v2.2.2`
 #
 `images:`  
- `hyperledger/fabric-peer:1.4.2`  `hyperledger/fabric-orderer:1.4.2`  `hyperledger/fabric-tools:1.4.2`  `hyperledger
- /fabric-ccenv:1.4.2`  `hyperledger/fabric-baseos:amd64-0.4.15`
+ `hyperledger/fabric-peer:2.2.2`  `hyperledger/fabric-orderer:2.2.2`  `hyperledger/fabric-tools:2.2.2`  `hyperledger
+ /fabric-ccenv:2.2.2` 
 #
 
 
 目录:
 
 - app: main.go，测试的主程序
-- binaries: 二进制文件夹，需要将所有的二进制文件拷贝到 ***/fabric-samples/bin/ 目录下, 并在$PATH 变量中添加 ***/fabric-samples/bin/
 - chaincode: 链码
 - cli: 链码调用代码封装
 - config: fabric sdk 与区块链交互配置
@@ -23,10 +22,8 @@ Fabric sdk go sample
 ## Quick start
 
 1. 启动fabric网络    
-    ```
-    进入 fabric-samples/first-network 
-    ./byfn.sh up
-    ```
+
+
 
 
 2. 配置`config.yaml`
