@@ -1,6 +1,6 @@
 Fabric sdk go sample
 ==========
-基于 fabric-samples/test-network启动的网络,通过使用 fabric-sdk-go 来操作链码的例子,
+基于 fabric-samples/test-network启动的网络,通过使用 fabric-sdk-go 来操作链码的例子,在fabric2.2.2 版本上，调试 chaincode external service
 #
 `environment:`      
 `golang v1.14.12`  `fabric v2.2.2`  `fabric-samples v2.2.2`
@@ -23,7 +23,7 @@ Fabric sdk go sample
 
 1. 启动fabric网络    
 
-
+教程：https://github.com/tauruswei/fabric-samples/tree/release2.2.2/asset-transfer-basic/chaincode-external
 
 
 2. 配置`config.yaml`
@@ -32,36 +32,10 @@ Fabric sdk go sample
     *** 改为自己的相关目录
     ```
 
-3. 依赖包的安装
+3. 修改 admin 证书名称
     ```
-    cd fabric-sdk-go-sample
-    go mod download
+    mv fabric-samples\test-network\organizations\peerOrganizations\org1.example.com\users\Admin@org1.example.com\msp\signcerts\cert.pem fabric-samples\test-network\organizations\peerOrganizations\org1.example.com\users\Admin@org1.example.com\msp\signcerts\Admin@org1.example.com-cert.pem
     ```
 
  
 4. 运行客户端程序`go run main.go`
-
-    ```bash
-    [root@jc chaincode]# cd app
-    [root@jc chaincode]# go run main.go
-    2020/03/26 21:20:27 Initialized fabric sdk
-    2020/03/26 21:20:27 Initialized resource client
-    2020/03/26 21:20:27 Initialized channel client
-    2020/03/26 21:20:27 =================== Phase 1 begin ===================
-    2020/03/26 21:20:27 Install  response status: 200
-    2020/03/26 21:20:27 Chaincode has been installed on org1's peers
-    2020/03/26 21:20:47 Instantitate chaincode tx: 7bc22a9e65766b4c38451f4f1271c5c961fd1d7a5880da1cd2141d322ce2139c
-    2020/03/26 21:20:47 Chaincode has been instantiated
-    2020/03/26 21:20:49 Invoke chaincode response:
-    id: aecd053b42e591f8e493236b281e8379edc156373004c6b98aefdd5191a0be2b
-    validate: VALID
-    chaincode status: 200
-
-    2020/03/26 21:20:49 Invoke chaincode success
-    2020/03/26 21:20:49 Query chaincode tx response:
-    tx: 2a1f7f060f19cb2a6f9a5ec30180d57ba820b00c88ce794eb6a3984ed629e083
-    result: 90
-
-    2020/03/26 21:20:49 Query chaincode success on peer0.org1
-    2020/03/26 21:20:49 =================== Phase 1 end ===================
-    ```
