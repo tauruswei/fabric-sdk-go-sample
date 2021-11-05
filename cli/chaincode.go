@@ -1,8 +1,10 @@
 package cli
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/client/channel"
@@ -229,6 +231,7 @@ func (c *Client) QueryAssets(peer, startkey, endkey, pageSize string) error {
 	// send request and handle response
 	reqPeers := channel.WithTargetEndpoints(peer)
 	resp, err := c.cc.Query(req, reqPeers)
+
 	if err != nil {
 		return errors.WithMessage(err, "query chaincode error")
 	}
@@ -236,6 +239,20 @@ func (c *Client) QueryAssets(peer, startkey, endkey, pageSize string) error {
 	log.Printf("Query chaincode tx response:\ntx: %s\nresult: %v\n\n",
 		resp.TransactionID,
 		string(resp.Payload))
+
+	var assets []*Asset
+	err = json.Unmarshal(resp.Payload, &assets)
+	if err != nil {
+		return err
+	}
+	for i := 0; i < len(assets); i++ {
+
+		id, err := strconv.ParseInt(assets[i].ID, 2, 64)
+		if err != nil {
+			return err
+		}
+		assets[i].ID = strconv.Itoa(int(id))
+	}
 	return nil
 }
 
@@ -285,4 +302,13 @@ func packArgs(paras []string) [][]byte {
 		args = append(args, []byte(k))
 	}
 	return args
+}
+
+// Asset describes basic details of what makes up a simple asset
+type Asset struct {
+	ID             string `json:"ID"`
+	Color          string `json:"color"`
+	Size           int    `json:"size"`
+	Owner          string `json:"owner"`
+	AppraisedValue int    `json:"appraisedValue"`
 }

@@ -4,6 +4,7 @@ import (
 	"fabric-sdk-go-sample/cli"
 	"fmt"
 	"log"
+	"strconv"
 )
 
 const (
@@ -22,8 +23,8 @@ func main() {
 	//Phase1(org1Client)
 	//CreateAsset(org1Client)
 	//CreateAssets(org1Client)
-	QueryAsset(org1Client)
-	//QueryAssets(org1Client)
+	//QueryAsset(org1Client)
+	QueryAssets(org1Client)
 }
 
 func Phase(cli1 *cli.Client) {
@@ -55,7 +56,7 @@ func QueryAsset(cli1 *cli.Client) {
 	log.Println("=================== QueryAsset ===================")
 	defer log.Println("=================== QueryAsset ===================")
 
-	if err := cli1.QueryAsset("peer0.org1.example.com", "1234567890123456789012345678901234567890123456789012345678901234"); err != nil {
+	if err := cli1.QueryAsset("peer0.org1.example.com", "asset1"); err != nil {
 		log.Panicf("Query chaincode error: %v", err)
 	}
 	log.Println("Query chaincode success on peer0.org1")
@@ -64,7 +65,7 @@ func QueryAssets(cli1 *cli.Client) {
 	log.Println("=================== QueryOneAsset ===================")
 	defer log.Println("=================== QueryOneAsset ===================")
 
-	if err := cli1.QueryAssets("peer0.org1.example.com", "asset1", "asset11", "10"); err != nil {
+	if err := cli1.QueryAssets("peer0.org1.example.com", "0000000000000000000000000000000000000000000000000000000000110011", "0000000000000000000000000000000000000000000000000000000001000111", "10"); err != nil {
 		log.Panicf("Query chaincode error: %v", err)
 	}
 	log.Println("Query chaincode success on peer0.org1")
@@ -81,11 +82,17 @@ func CreateAsset(cli1 *cli.Client) {
 func CreateAssets(cli1 *cli.Client) {
 	log.Println("=================== CreateAssets ===================")
 	defer log.Println("=================== CreateAssets ===================")
-	for i := 101; i < 300; i++ {
-		id := fmt.Sprintf("asset%d", i)
-		if _, err := cli1.CreateAsset([]string{peer0Org1}, id); err != nil {
+	for i := 7; i <= 107; i++ {
+		id1 := fmt.Sprintf("asset%d", i)
+		if _, err := cli1.CreateAsset([]string{peer0Org1}, id1); err != nil {
 			log.Panicf("Query chaincode error: %v", err)
 		}
-		log.Println("Query chaincode success on peer0.org1")
+		log.Printf("create asset successfully, id=%s", id1)
+		s := strconv.FormatInt(int64(i), 2)
+		id2 := fmt.Sprintf("%0*s", 64, s)
+		if _, err := cli1.CreateAsset([]string{peer0Org1}, id2); err != nil {
+			log.Panicf("Query chaincode error: %v", err)
+		}
+		log.Printf("create asset successfully, id=%s", id2)
 	}
 }
