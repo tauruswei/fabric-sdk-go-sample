@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	cc_name    = "marbles"
+	cc_name    = "samplecc"
 	cc_version = "1.0.0"
 )
 
@@ -24,7 +24,7 @@ func main() {
 			OrgMspId:      "Org1MSP",
 			OrgUser:       "User1",
 			OrgPeerNum:    1,
-			OrgAnchorFile: "/root/go/src/fabric-go-sdk/fixtures/channel-artifacts/Org1MSPanchors.tx",
+			OrgAnchorFile: "/Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/channel-artifacts/Org1MSPanchors.tx",
 		},
 		{
 			OrgAdminUser:  "Admin",
@@ -32,20 +32,20 @@ func main() {
 			OrgMspId:      "Org2MSP",
 			OrgUser:       "User1",
 			OrgPeerNum:    1,
-			OrgAnchorFile: "/root/go/src/fabric-go-sdk/fixtures/channel-artifacts/Org2MSPanchors.tx",
+			OrgAnchorFile: "/Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/channel-artifacts/Org2MSPanchors.tx",
 		},
 	}
 
 	// init sdk env info
 	info := sdkInit.SdkEnvInfo{
 		ChannelID:        "mychannel",
-		ChannelConfig:    "/root/go/src/fabric-go-sdk/fixtures/channel-artifacts/channel.tx",
+		ChannelConfig:    "/Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/channel-artifacts/mychannel.tx",
 		Orgs:             orgs,
 		OrdererAdminUser: "Admin",
 		OrdererOrgName:   "OrdererOrg",
 		OrdererEndpoint:  "orderer.example.com",
 		ChaincodeID:      cc_name,
-		ChaincodePath:    "/Users/fengxiaoxiao/work/go/src/github.com/hyperledger/fabric-samples/chaincode/marbles02/go/",
+		ChaincodePath:    "/Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/chaincode/",
 		ChaincodeVersion: cc_version,
 	}
 
@@ -56,11 +56,11 @@ func main() {
 		os.Exit(-1)
 	}
 
-	//// create channel and join
-	//if err := sdkInit.CreateAndJoinChannel(&info); err != nil {
-	//	fmt.Println(">> Create channel and join error:", err)
-	//	os.Exit(-1)
-	//}
+	// create channel and join
+	if err := sdkInit.CreateAndJoinChannel(&info); err != nil {
+		fmt.Println(">> Create channel and join error:", err)
+		os.Exit(-1)
+	}
 
 	// create chaincode lifecycle
 	if err := sdkInit.CreateCCLifecycle(&info, 1, false, sdk); err != nil {
@@ -85,14 +85,28 @@ func main() {
 	defer info.EvClient.Unregister(sdkInit.BlockListener(info.EvClient))
 	defer info.EvClient.Unregister(sdkInit.ChainCodeEventListener(info.EvClient, info.ChaincodeID))
 
-	a := []string{"initMarble", "marble0", "blue", "36", "tom"}
+	a := []string{"set", "ID1", "123"}
 	ret, err := App.Set(a)
 	if err != nil {
 		fmt.Println(err)
 	}
 	fmt.Println("<--- 添加信息　--->：", ret)
 
-	a = []string{"readMarble", "marble0"}
+	a = []string{"set", "ID2", "456"}
+	ret, err = App.Set(a)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("<--- 添加信息　--->：", ret)
+
+	a = []string{"set", "ID3", "789"}
+	ret, err = App.Set(a)
+	if err != nil {
+		fmt.Println(err)
+	}
+	fmt.Println("<--- 添加信息　--->：", ret)
+
+	a = []string{"get", "ID3"}
 	response, err := App.Get(a)
 	if err != nil {
 		fmt.Println(err)
