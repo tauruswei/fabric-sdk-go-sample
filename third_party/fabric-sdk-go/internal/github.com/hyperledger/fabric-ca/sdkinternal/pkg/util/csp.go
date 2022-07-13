@@ -30,7 +30,6 @@ import (
 	"fmt"
 	"github.com/tjfoc/gmsm/sm2"
 	gmx509 "github.com/tjfoc/gmsm/x509"
-	//"github.com/tjfoc/gmsm/sm2"
 	"io/ioutil"
 	"strings"
 

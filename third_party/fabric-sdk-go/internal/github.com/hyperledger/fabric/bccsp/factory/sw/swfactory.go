@@ -57,18 +57,21 @@ func (f *SWFactory) Get(swOpts *SwOpts) (bccsp.BCCSP, error) {
 		// Default to ephemeral key store
 		ks = sw.NewDummyKeyStore()
 	}
+
 	return sw.NewWithParams(swOpts.SecLevel, swOpts.HashFamily, ks)
 }
 
 // SwOpts contains options for the SWFactory
 type SwOpts struct {
 	// Default algorithms when not specified (Deprecated?)
-	SecLevel      int                `mapstructure:"security" json:"security" yaml:"Security"`
-	HashFamily    string             `mapstructure:"hash" json:"hash" yaml:"Hash"`
+	SecLevel   int    `mapstructure:"security" json:"security" yaml:"Security"`
+	HashFamily string `mapstructure:"hash" json:"hash" yaml:"Hash"`
+
+	// Keystore Options
+	Ephemeral     bool               `mapstructure:"tempkeys,omitempty" json:"tempkeys,omitempty"`
 	FileKeystore  *FileKeystoreOpts  `mapstructure:"filekeystore,omitempty" json:"filekeystore,omitempty" yaml:"FileKeyStore"`
 	DummyKeystore *DummyKeystoreOpts `mapstructure:"dummykeystore,omitempty" json:"dummykeystore,omitempty"`
 	InmemKeystore *InmemKeystoreOpts `mapstructure:"inmemkeystore,omitempty" json:"inmemkeystore,omitempty"`
-	Ephemeral     bool               `mapstructure:"tempkeys,omitempty" json:"tempkeys,omitempty"`
 }
 
 // Pluggable Keystores, could add JKS, P12, etc..

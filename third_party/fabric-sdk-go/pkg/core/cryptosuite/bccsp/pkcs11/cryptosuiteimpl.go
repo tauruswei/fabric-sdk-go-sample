@@ -35,7 +35,6 @@ func GetSuiteByConfig(config core.CryptoSuiteConfig) (core.CryptoSuite, error) {
 }
 
 func getBCCSPFromOpts(config *pkcs11.PKCS11Opts) (bccsp.BCCSP, error) {
-	//f := &bccspPkcs11.PKCS11Factory{}
 	f := &bccspPkcs11.PKCS11Factory{}
 
 	csp, err := f.Get(config)

@@ -36,7 +36,7 @@ func (kg *ecdsaKeyGenerator) KeyGen(opts bccsp.KeyGenOpts) (bccsp.Key, error) {
 		return nil, fmt.Errorf("Failed generating ECDSA key for [%v]: [%s]", kg.curve, err)
 	}
 
-	return &ecdsaPrivateKey{privKey}, nil
+	return &ecdsaPrivateKey{privKey, true}, nil
 }
 
 type gmsm2KeyGenerator struct {

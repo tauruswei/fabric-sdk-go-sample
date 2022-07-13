@@ -1,24 +1,39 @@
-# fabric-go-sdk
+# fabric-go-sdk-sample
+
 本项目基于hyperledger fabric 2.x网络
+
 ## 基本流程
-### 拉取项目
-`GOPATH`设置为`/root/go`
-进入`GOPATH/src`
+
+### 编译国密镜像
 
 ```
-cd $GOPATH/src && git clone https://github.com/sxguan/fabric-go-sdk.git
+git clone https://github.com/tauruswei/fabric
+cd fabric
+git checkout -b 2.2.4-gm-withour-tls 2.2.4-gm-withour-tls
+make peer-docker
+make orderer-docker
+make ccenv-docker
+make baseos-docker
+```
+
+###拉取项目
+
+```
+git clone https://github.com/tauruswei/fabric-sdk-go-sample
+cd ./fabric-go-sdk-sample/fixtures/ 
+git checkout -b 2.2.4-1.0.0-btea3-gm-without-tls 2.2.4-1.0.0-btea3-gm-without-tls
 ```
 
 ### 启动节点
 
 ```
-cd ./fabric-go-sdk/fixtures/ && docker-compose up -d
+docker-compose up -d
 ```
 
 ### 启动项目
 
 ```
-cd .. && go build && ./fabric-go-sdk
+cd .. && go build && ./fabric-go-sdk-sample
 ```
 ```
 >> 开始创建通道......
@@ -34,11 +49,12 @@ cd .. && go build && ./fabric-go-sdk
 >> 组织认可智能合约定义......
 >>> chaincode approved by Org1 peers:
 	peer0.org1.example.com:7051
-	peer1.org1.example.com:9051
+>>> chaincode approved by Org2 peers:
+        grpcs://localhost:9051
 >> 组织认可智能合约定义完成
 >> 检查智能合约是否就绪......
-LifecycleCheckCCCommitReadiness cc = simplecc, = {map[Org1MSP:true]}
-LifecycleCheckCCCommitReadiness cc = simplecc, = {map[Org1MSP:true]}
+LifecycleCheckCCCommitReadiness cc = samplecc, = {map[Org1MSP:true Org2MSP:true]}
+LifecycleCheckCCCommitReadiness cc = samplecc, = {map[Org1MSP:true Org2MSP:true]}
 >> 智能合约已经就绪
 >> 提交智能合约定义......
 >> 智能合约定义提交完成

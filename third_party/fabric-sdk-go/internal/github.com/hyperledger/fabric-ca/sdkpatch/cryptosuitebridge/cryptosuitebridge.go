@@ -15,7 +15,6 @@ import (
 	"crypto/ecdsa"
 	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp/utils"
 	"github.com/tjfoc/gmsm/sm2"
-	//"github.com/tjfoc/gmsm/x509"
 
 	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric-ca/sdkpatch/keyutil"
 	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp"

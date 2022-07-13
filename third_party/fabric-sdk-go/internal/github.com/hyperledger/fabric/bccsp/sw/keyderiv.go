@@ -26,12 +26,6 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/internal/github.com/hyperledger/fabric/bccsp"
 )
 
-type smPublicKeyKeyDeriver struct{}
-
-func (kd *smPublicKeyKeyDeriver) KeyDeriv(key bccsp.Key, opts bccsp.KeyDerivOpts) (bccsp.Key, error) {
-	return nil, errors.New("Not implemented")
-}
-
 type ecdsaPublicKeyKeyDeriver struct{}
 
 func (kd *ecdsaPublicKeyKeyDeriver) KeyDeriv(key bccsp.Key, opts bccsp.KeyDerivOpts) (bccsp.Key, error) {
@@ -124,7 +118,7 @@ func (kd *ecdsaPrivateKeyKeyDeriver) KeyDeriv(key bccsp.Key, opts bccsp.KeyDeriv
 		return nil, errors.New("Failed temporary public key IsOnCurve check.")
 	}
 
-	return &ecdsaPrivateKey{tempSK}, nil
+	return &ecdsaPrivateKey{tempSK, true}, nil
 }
 
 type aesPrivateKeyKeyDeriver struct {

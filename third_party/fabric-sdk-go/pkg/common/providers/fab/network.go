@@ -8,7 +8,6 @@ package fab
 
 import (
 	"crypto/x509"
-	//gmx509 "github.com/tjfoc/gmsm/x509"
 	"time"
 
 	"github.com/hyperledger/fabric-sdk-go/pkg/common/errors/retry"

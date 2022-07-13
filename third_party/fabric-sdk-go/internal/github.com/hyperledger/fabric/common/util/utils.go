@@ -41,7 +41,7 @@ func ComputeSHA3256(data []byte) (hash []byte) {
 	return
 }
 
-// ComputeSHA256 returns SHA2-256 on data
+// ComputeGMSM3 returns sm3 hash on data
 func ComputeGMSM3(data []byte) (hash []byte) {
 	hash, err := cryptosuitebridge.GetDefault().Hash(data, &bccsp.GMSM3Opts{})
 	if err != nil {
