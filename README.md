@@ -16,7 +16,7 @@ make ccenv-docker
 make baseos-docker
 ```
 
-###拉取项目
+### 拉取项目
 
 ```
 git clone https://github.com/tauruswei/fabric-sdk-go-sample
