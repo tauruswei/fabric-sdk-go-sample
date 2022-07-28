@@ -306,7 +306,11 @@ var NoFilter = NewFilter(NoPriorities, NoExclusion)
 
 func selectPeersForLayout(endorsersByGroups map[string][]*Peer, layout map[string]int, f Filter) (Endorsers, bool) {
 	var endorsers []*Peer
+	if f == nil {
+		f = NewFilter(NoPriorities, NoExclusion)
+	}
 	for grp, count := range layout {
+
 		endorsersOfGrp := f.Filter(Endorsers(endorsersByGroups[grp]))
 
 		// We couldn't select enough peers for this layout because the current group

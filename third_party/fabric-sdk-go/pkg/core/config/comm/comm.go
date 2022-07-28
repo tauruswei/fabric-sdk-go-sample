@@ -48,7 +48,7 @@ func TLSCertHash(config fab.EndpointConfig) ([]byte, error) {
 
 //computeHash computes hash for given bytes using underlying cryptosuite default
 func computeHash(msg []byte) ([]byte, error) {
-	h, err := cryptosuite.GetDefault().Hash(msg, cryptosuite.GetSHA256Opts())
+	h, err := cryptosuite.GetDefault().Hash(msg, cryptosuite.GetGMSM3Opts())
 	if err != nil {
 		return nil, errors.WithMessage(err, "failed to compute tls cert hash")
 	}
