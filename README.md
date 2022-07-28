@@ -9,10 +9,16 @@
 ```
 git clone https://github.com/tauruswei/fabric
 cd fabric
-git checkout -b 2.2.4-gm-withour-tls 2.2.4-gm-withour-tls
+git checkout -b 2.2.4-gm-withour-tls-aarch64 2.2.4-gm-withour-tls-aarch64
+go env -w GO11MODULE=on
+go mod tidy
+make peer-docker-clean
 make peer-docker
+make orderer-docker-clean
 make orderer-docker
+make ccenv-docker-clean
 make ccenv-docker
+make baseos-docker-clean
 make baseos-docker
 ```
 
@@ -21,7 +27,7 @@ make baseos-docker
 ```
 git clone https://github.com/tauruswei/fabric-sdk-go-sample
 cd ./fabric-go-sdk-sample/fixtures/ 
-git checkout -b 2.2.4-1.0.0-btea3-gm-without-tls 2.2.4-1.0.0-btea3-gm-without-tls
+git checkout -b 2.2.4-1.0.0-btea3-gm-without-tls-aarch64 2.2.4-1.0.0-btea3-gm-without-tls-aarch64
 ```
 
 ### 启动节点
