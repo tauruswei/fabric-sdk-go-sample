@@ -12,7 +12,6 @@ package protoutil
 
 import (
 	"bytes"
-	"crypto/sha256"
 	"github.com/tjfoc/gmsm/sm3"
 
 	"github.com/golang/protobuf/proto"
@@ -474,7 +473,7 @@ func GetProposalHash1(header *common.Header, ccPropPayl []byte) ([]byte, error) 
 		return nil, err
 	}
 
-	hash2 := sha256.New()
+	hash2 := sm3.New()
 	// hash the serialized Channel Header object
 	hash2.Write(header.ChannelHeader)
 	// hash the serialized Signature Header object

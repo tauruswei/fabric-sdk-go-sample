@@ -78,7 +78,7 @@ func NewHeader(ctx contextApi.Client, channelID string, opts ...fab.TxnHeaderOpt
 		}
 	}
 
-	ho := cryptosuite.GetSHA256Opts() // TODO: make configurable
+	ho := cryptosuite.GetGMSM3Opts() // TODO: make configurable
 	h, err := ctx.CryptoSuite().GetHash(ho)
 	if err != nil {
 		return nil, errors.WithMessage(err, "hash function creation failed")

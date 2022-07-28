@@ -26,9 +26,9 @@ import (
 	"github.com/hyperledger/fabric-sdk-go/pkg/util/pathvar"
 	"github.com/stretchr/testify/require"
 
+	pb "github.com/hyperledger/fabric-protos-go/peer"
 	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/common/policydsl"
 	"github.com/hyperledger/fabric-sdk-go/third_party/github.com/hyperledger/fabric/core/common/ccprovider"
-	pb "github.com/hyperledger/fabric-protos-go/peer"
 )
 
 const (

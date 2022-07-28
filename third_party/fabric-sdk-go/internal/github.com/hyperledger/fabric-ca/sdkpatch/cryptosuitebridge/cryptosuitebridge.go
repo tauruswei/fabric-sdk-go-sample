@@ -80,6 +80,11 @@ func GetSHA256Opts() core.HashOpts {
 	return &bccsp.SHA256Opts{}
 }
 
+//GetSHA256Opts returns options relating to SHA-256.
+func GetGMSM3Opts() core.HashOpts {
+	return &bccsp.GMSM3Opts{}
+}
+
 // GetECDSAKeyGenOpts returns options for ECDSA key generation.
 func GetECDSAKeyGenOpts(ephemeral bool) core.KeyGenOpts {
 	return &bccsp.ECDSAKeyGenOpts{Temporary: ephemeral}
