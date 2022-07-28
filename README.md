@@ -10,7 +10,7 @@
 git clone https://github.com/tauruswei/fabric
 cd fabric
 git checkout -b 2.2.4-gm-withour-tls-aarch64 2.2.4-gm-withour-tls-aarch64
-go env -w GO11MODULE=on
+go env -w GO111MODULE=on
 go mod tidy
 make peer-docker-clean
 make peer-docker
