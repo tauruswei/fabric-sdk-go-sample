@@ -10,9 +10,15 @@
 git clone https://github.com/tauruswei/fabric
 cd fabric
 git checkout -b 2.2.4-gm-withour-tls 2.2.4-gm-withour-tls
+go env -w GO111MODULE=on
+go mod tidy
+make peer-docker-clean
 make peer-docker
+make orderer-docker-clean
 make orderer-docker
+make ccenv-docker-clean
 make ccenv-docker
+make baseos-docker-clean
 make baseos-docker
 ```
 
