@@ -9,9 +9,10 @@
 ```
 git clone https://github.com/tauruswei/fabric
 cd fabric
-git checkout -b 2.2.4-gm-withour-tls 2.2.4-gm-withour-tls
+git checkout -b 2.2.4-aarch64 2.2.4-aarch64
 go env -w GO111MODULE=on
 go mod tidy
+go mod vendor
 make peer-docker-clean
 make peer-docker
 make orderer-docker-clean
@@ -27,7 +28,7 @@ make baseos-docker
 ```
 git clone https://github.com/tauruswei/fabric-sdk-go-sample
 cd ./fabric-go-sdk-sample/fixtures/ 
-git checkout -b 2.2.4-1.0.0-btea3-gm-without-tls 2.2.4-1.0.0-btea3-gm-without-tls
+git checkout -b 2.2.4-1.0.0-btea3 2.2.4-1.0.0-btea3
 ```
 
 ### 启动节点
@@ -71,4 +72,8 @@ LifecycleCheckCCCommitReadiness cc = samplecc, = {map[Org1MSP:true Org2MSP:true]
 <--- 添加信息　--->： 18c0c86ce029d7de04461484976c5151992864b52ca28905d0ccf911443fdfcb
 <--- 查询信息　--->： 123
 ```
+### 清理项目
 
+```
+cd ./fabric-go-sdk-sample/fixtures/ && bash stop.sh
+```
