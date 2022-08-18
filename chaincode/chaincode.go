@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
 
 	"github.com/hyperledger/fabric-chaincode-go/shim"
 	"github.com/hyperledger/fabric-protos-go/peer"
@@ -10,6 +11,8 @@ import (
 
 // SimpleAsset implements a simple chaincode to manage an asset
 type SimpleAsset struct {
+	Name  string `json:"name,omitempty"`
+	Value int    `json:"value,omitempty"`
 }
 type outputEvent struct {
 	EventName string
@@ -34,7 +37,9 @@ func (t *SimpleAsset) Invoke(stub shim.ChaincodeStubInterface) peer.Response {
 	var err error
 	if fn == "set" {
 		result, err = set(stub, args)
-	} else { // assume 'get' even if fn is nil
+	} else if fn == "change" { // assume 'get' even if fn is nil
+		result, err = change(stub, args)
+	} else {
 		result, err = get(stub, args)
 	}
 	if err != nil {
@@ -52,10 +57,44 @@ func set(stub shim.ChaincodeStubInterface, args []string) (string, error) {
 		return "", fmt.Errorf("Incorrect arguments. Expecting a key and a value")
 	}
 
-	err := stub.PutState(args[0], []byte(args[1]))
+	asset := SimpleAsset{
+		Name: args[0],
+	}
+	asset.Value, _ = strconv.Atoi(args[1])
+	marshal, _ := json.Marshal(asset)
+
+	err := stub.PutState(args[0], marshal)
 	if err != nil {
 		return "", fmt.Errorf("Failed to set asset: %s", args[0])
 	}
+	event := outputEvent{
+		EventName: "set",
+	}
+	payload, err := json.Marshal(event)
+	if err != nil {
+		return "", err
+	}
+	err = stub.SetEvent("chaincode-event", payload)
+	return args[1], nil
+}
+
+func change(stub shim.ChaincodeStubInterface, args []string) (string, error) {
+	if len(args) != 2 {
+		return "", fmt.Errorf("Incorrect arguments. Expecting a key and a value")
+	}
+	var asset SimpleAsset
+	state, _ := stub.GetState(args[0])
+	json.Unmarshal(state, &asset)
+	value1, _ := strconv.Atoi(args[1])
+	asset.Value = asset.Value - value1
+
+	marshal, _ := json.Marshal(asset)
+
+	err := stub.PutState(args[0], marshal)
+	if err != nil {
+		return "", fmt.Errorf("Failed to change asset: %s", args[0])
+	}
+
 	event := outputEvent{
 		EventName: "set",
 	}

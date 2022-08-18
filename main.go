@@ -92,7 +92,7 @@ func main() {
 	}
 	fmt.Println("<--- 添加信息　--->：", ret)
 
-	a = []string{"set", "ID2", "456"}
+	a = []string{"change", "ID1", "200"}
 	ret, err = App.Set(a)
 	if err != nil {
 		fmt.Println(err)

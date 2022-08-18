@@ -82,7 +82,6 @@ package main
 import (
 	"bytes"
 	"crypto/x509"
-	"encoding/base64"
 	"encoding/json"
 	"encoding/pem"
 	"fmt"
@@ -182,20 +181,33 @@ func (t *SimpleChaincode) lock(stub shim.ChaincodeStubInterface, args []string) 
 
 	//   0
 	//  证书
-	if len(args) != 1 {
-		return shim.Error("Incorrect number of arguments. Expecting 1")
-	}
-
+	//if len(args) != 1 {
+	//	return shim.Error("Incorrect number of arguments. Expecting 1")
+	//}
+	//
 	fmt.Println("- start lock marble")
-	if len(args[0]) <= 0 {
-		return shim.Error("1st argument must be a non-empty string")
-	}
-
-	certbytes, err := base64.StdEncoding.DecodeString(args[0])
+	//if len(args[0]) <= 0 {
+	//	return shim.Error("1st argument must be a non-empty string")
+	//}
+	//creator,_ := stub.GetCreator()
+	//fmt.Println(string(creator))
+	//
+	//certbytes, err := base64.StdEncoding.DecodeString(args[0])
+	//if err != nil {
+	//	return shim.Error("1st argument must be base64 formatted")
+	//
+	//}
+	creatorBytes, err := stub.GetCreator()
 	if err != nil {
-		return shim.Error("1st argument must be base64 formatted")
-
+		return shim.Error(err.Error())
 	}
+	certStart := bytes.Index(creatorBytes, []byte("-----BEGIN"))
+	if certStart == -1 {
+		//return nil, fmt.Errorf("No Certificate found")
+		return shim.Error("No Certificate found")
+	}
+	certbytes := creatorBytes[certStart:]
+
 	var commonName string
 	certificate, err := gmx509.ReadCertificateFromPem(certbytes)
 	if err != nil {
@@ -231,20 +243,25 @@ func (t *SimpleChaincode) unlock(stub shim.ChaincodeStubInterface, args []string
 
 	//   0
 	//  证书
-	if len(args) != 1 {
-		return shim.Error("Incorrect number of arguments. Expecting 1")
-	}
+	//if len(args) != 1 {
+	//	return shim.Error("Incorrect number of arguments. Expecting 1")
+	//}
 
 	fmt.Println("- start unlock marble")
-	if len(args[0]) <= 0 {
-		return shim.Error("1st argument must be a non-empty string")
-	}
+	//if len(args[0]) <= 0 {
+	//	return shim.Error("1st argument must be a non-empty string")
+	//}
 
-	certbytes, err := base64.StdEncoding.DecodeString(args[0])
+	creatorBytes, err := stub.GetCreator()
 	if err != nil {
-		return shim.Error("1st argument must be base64 formatted")
-
+		return shim.Error(err.Error())
 	}
+	certStart := bytes.Index(creatorBytes, []byte("-----BEGIN"))
+	if certStart == -1 {
+		//return nil, fmt.Errorf("No Certificate found")
+		return shim.Error("No Certificate found")
+	}
+	certbytes := creatorBytes[certStart:]
 	var commonName string
 	certificate, err := gmx509.ReadCertificateFromPem(certbytes)
 	if err != nil {
