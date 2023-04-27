@@ -1,118 +1,58 @@
 package main
 
 import (
-	"fabric-go-sdk-sample/sdkInit"
-	"fmt"
-	"os"
-	"time"
+	"fabric-go-sdk-sample/log"
+	"fabric-go-sdk-sample/router"
+	"fabric-go-sdk-sample/service"
+	"github.com/gin-gonic/gin"
+	"github.com/unrolled/secure"
+	"strconv"
 )
 
-const (
-	cc_name    = "samplecc"
-	cc_version = "1.0.0"
-)
+/**
+ * @Author: fengxiaoxiao /13156050650@163.com
+ * @Desc:
+ * @Version: 1.0.0
+ * @Date: 2023/4/26 16:41
+ */
 
-var App sdkInit.Application
+const config_yaml = "./config.yaml"
 
 func main() {
-	// init orgs information
 
-	orgs := []*sdkInit.OrgInfo{
-		{
-			OrgAdminUser:  "Admin",
-			OrgName:       "Org1",
-			OrgMspId:      "Org1MSP",
-			OrgUser:       "User1",
-			OrgPeerNum:    1,
-			OrgAnchorFile: "/Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/channel-artifacts/Org1MSPanchors.tx",
-		},
-		{
-			OrgAdminUser:  "Admin",
-			OrgName:       "Org2",
-			OrgMspId:      "Org2MSP",
-			OrgUser:       "User1",
-			OrgPeerNum:    1,
-			OrgAnchorFile: "/Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/channel-artifacts/Org2MSPanchors.tx",
-		},
-	}
+	service.NewService(config_yaml)
 
-	// init sdk env info
-	info := sdkInit.SdkEnvInfo{
-		ChannelID:        "mychannel",
-		ChannelConfig:    "/Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/channel-artifacts/mychannel.tx",
-		Orgs:             orgs,
-		OrdererAdminUser: "Admin",
-		OrdererOrgName:   "OrdererOrg",
-		OrdererEndpoint:  "orderer.example.com",
-		ChaincodeID:      cc_name,
-		ChaincodePath:    "/Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/chaincode/",
-		ChaincodeVersion: cc_version,
-	}
+	defer func() {
+		if err := recover(); err != nil {
+			log.Error(err)
+		}
+	}()
 
-	// sdk setup
-	sdk, err := sdkInit.Setup("config.yaml", &info)
+	route := router.CreateRouter()
+	portString := "8081"
+	port, err := strconv.Atoi(portString)
 	if err != nil {
-		fmt.Println(">> SDK setup error:", err)
-		os.Exit(-1)
+		panic("parse server port:" + portString + " err: " + err.Error())
 	}
+	route.Use(TlsHandler(port))
+	// todo listenAddress   tls.server.cert   tls.server.key
 
-	// create channel and join
-	if err := sdkInit.CreateAndJoinChannel(&info); err != nil {
-		fmt.Println(">> Create channel and join error:", err)
-		os.Exit(-1)
+	route.Run(":" + "8081")
+
+}
+
+func TlsHandler(port int) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		secureMiddleware := secure.New(secure.Options{
+			SSLRedirect: true,
+			SSLHost:     ":" + strconv.Itoa(port),
+		})
+		err := secureMiddleware.Process(c.Writer, c.Request)
+
+		if err != nil {
+			return
+		}
+
+		c.Next()
 	}
-
-	// create chaincode lifecycle
-	if err := sdkInit.CreateCCLifecycle(&info, 1, false, sdk); err != nil {
-		fmt.Println(">> create chaincode lifecycle error: %v", err)
-		os.Exit(-1)
-	}
-
-	// invoke chaincode set status
-	fmt.Println(">> 通过链码外部服务设置链码状态......")
-
-	if err := info.InitService(info.ChaincodeID, info.ChannelID, info.Orgs[0], sdk); err != nil {
-
-		fmt.Println("InitService successful")
-		os.Exit(-1)
-	}
-
-	App = sdkInit.Application{
-		SdkEnvInfo: &info,
-	}
-	fmt.Println(">> 设置链码状态完成")
-
-	defer info.EvClient.Unregister(sdkInit.BlockListener(info.EvClient))
-	defer info.EvClient.Unregister(sdkInit.ChainCodeEventListener(info.EvClient, info.ChaincodeID))
-
-	a := []string{"set", "ID1", "123"}
-	ret, err := App.Set(a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("<--- 添加信息　--->：", ret)
-
-	a = []string{"set", "ID2", "456"}
-	ret, err = App.Set(a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("<--- 添加信息　--->：", ret)
-
-	a = []string{"set", "ID3", "789"}
-	ret, err = App.Set(a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("<--- 添加信息　--->：", ret)
-
-	a = []string{"get", "ID3"}
-	response, err := App.Get(a)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Println("<--- 查询信息　--->：", response)
-
-	time.Sleep(time.Second * 10)
-
 }
