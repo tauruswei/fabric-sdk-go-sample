@@ -96,7 +96,6 @@ http://127.0.0.1:8081/fabric/invoke
 {  
   "token": "1" 
 } 
-
 ```
 ```
 <--- 添加信息　--->： c4f3607dc0e1ab9601a6e7df74f8eb5a735f529aa4c5056be19c0bfa81b5c22f
