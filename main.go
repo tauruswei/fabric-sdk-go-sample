@@ -3,7 +3,6 @@ package main
 import (
 	"fabric-go-sdk-sample/log"
 	"fabric-go-sdk-sample/router"
-	"fabric-go-sdk-sample/service"
 	"github.com/gin-gonic/gin"
 	"github.com/unrolled/secure"
 	"strconv"
@@ -20,7 +19,7 @@ const config_yaml = "./config.yaml"
 
 func main() {
 
-	service.NewService(config_yaml)
+	//service.NewService(config_yaml)
 
 	defer func() {
 		if err := recover(); err != nil {

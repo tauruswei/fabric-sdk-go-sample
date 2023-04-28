@@ -24,6 +24,7 @@ func CreateRouter() *gin.Engine {
 
 	// invoke
 	farbicGroup := router.Group("/fabric")
+	farbicGroup.POST("/init", v1.Init)     // Init
 	farbicGroup.POST("/invoke", v1.Invoke) // invoke
 	farbicGroup.POST("/query", v1.Query)   // query
 
