@@ -57,7 +57,7 @@ Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-
 ### 初始化项目
 
 ```
-http://127.0.0.1:8081/fabric/init
+post http://127.0.0.1:8081/fabric/init
 ```
 ```
 >> 开始创建通道......
@@ -91,7 +91,7 @@ LifecycleCheckCCCommitReadiness cc = samplecc, = {map[Org1MSP:true Org2MSP:true]
 ### 调用 invoke 接口
 
 ```
-http://127.0.0.1:8081/fabric/invoke
+post http://127.0.0.1:8081/fabric/invoke
 # 消息体
 {  
   "token": "1" 
@@ -104,7 +104,7 @@ http://127.0.0.1:8081/fabric/invoke
 
 ### 调用 query 接口
 ```
-http://127.0.0.1:8081/fabric/query
+post http://127.0.0.1:8081/fabric/query
 # 消息体
 {  
   "token": "1" 
