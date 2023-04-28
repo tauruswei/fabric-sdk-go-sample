@@ -92,6 +92,11 @@ LifecycleCheckCCCommitReadiness cc = samplecc, = {map[Org1MSP:true Org2MSP:true]
 
 ```
 http://127.0.0.1:8081/fabric/invoke
+# 消息体
+{  
+  "token": "1" 
+} 
+
 ```
 ```
 <--- 添加信息　--->： c4f3607dc0e1ab9601a6e7df74f8eb5a735f529aa4c5056be19c0bfa81b5c22f
@@ -101,6 +106,10 @@ http://127.0.0.1:8081/fabric/invoke
 ### 调用 query 接口
 ```
 http://127.0.0.1:8081/fabric/query
+# 消息体
+{  
+  "token": "1" 
+} 
 ```
 ```
 <--- 查询信息　--->： 1
