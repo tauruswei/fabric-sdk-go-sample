@@ -232,7 +232,8 @@ type CreateNft721Request struct {
 	Type     int    `json:"type" binding:"required"`
 }
 type InvokeRequest struct {
-	Token string `json:"token"`
+	Id   string `json:"id"`
+	Data string `json:"data"`
 }
 type SaveNFTToDBRequest struct {
 	//OwnerName string `json:"ownerName" binding:"required"`
