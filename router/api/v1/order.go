@@ -21,6 +21,8 @@ func Init(c *gin.Context) {
 
 	// init orgs information
 
+	projectRootPath, err := os.Getwd()
+
 	orgs := []*sdkInit.OrgInfo{
 		{
 			OrgAdminUser:  "Admin",
@@ -28,7 +30,7 @@ func Init(c *gin.Context) {
 			OrgMspId:      "Org1MSP",
 			OrgUser:       "User1",
 			OrgPeerNum:    1,
-			OrgAnchorFile: "/Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/channel-artifacts/Org1MSPanchors.tx",
+			OrgAnchorFile: projectRootPath + "/fixtures/channel-artifacts/Org1MSPanchors.tx",
 		},
 		{
 			OrgAdminUser:  "Admin",
@@ -36,20 +38,20 @@ func Init(c *gin.Context) {
 			OrgMspId:      "Org2MSP",
 			OrgUser:       "User1",
 			OrgPeerNum:    1,
-			OrgAnchorFile: "/Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/channel-artifacts/Org2MSPanchors.tx",
+			OrgAnchorFile: projectRootPath + "/fixtures/channel-artifacts/Org2MSPanchors.tx",
 		},
 	}
 
 	// init sdk env info
 	info := sdkInit.SdkEnvInfo{
 		ChannelID:        "mychannel",
-		ChannelConfig:    "/Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/channel-artifacts/mychannel.tx",
+		ChannelConfig:    projectRootPath + "/fixtures/channel-artifacts/mychannel.tx",
 		Orgs:             orgs,
 		OrdererAdminUser: "Admin",
 		OrdererOrgName:   "OrdererOrg",
 		OrdererEndpoint:  "orderer.example.com",
 		ChaincodeID:      cc_name,
-		ChaincodePath:    "/Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/chaincode/",
+		ChaincodePath:    projectRootPath + "/chaincode/",
 		ChaincodeVersion: cc_version,
 	}
 
