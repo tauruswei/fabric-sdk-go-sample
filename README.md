@@ -101,7 +101,7 @@ Please check https://pkg.go.dev/github.com/gin-gonic/gin#readme-don-t-trust-all-
 [GIN-debug] Listening and serving HTTP on :8081
 ```
 
-### 初始化项目
+### 初始化项目（分支 invokeAndQuery-server）
 
 ```
 post http://127.0.0.1:8081/fabric/init
@@ -135,7 +135,7 @@ LifecycleCheckCCCommitReadiness cc = samplecc, = {map[Org1MSP:true Org2MSP:true]
 ```
 
 
-### 调用 invoke 接口
+### 调用 invoke 接口（分支 invokeAndQuery-server）
 
 ```
 post http://127.0.0.1:8081/fabric/invoke
@@ -150,7 +150,7 @@ post http://127.0.0.1:8081/fabric/invoke
 [GIN] 2023/04/28 - 14:32:21 | 200 |  2.055227625s |   192.168.2.150 | POST     "/fabric/invoke"
 ```
 
-### 调用 query 接口
+### 调用 query 接口（分支 invokeAndQuery-server）
 ```
 post http://127.0.0.1:8081/fabric/query
 # 消息体
