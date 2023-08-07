@@ -1,6 +1,8 @@
 package v1
 
 import (
+	"crypto/sha256"
+	"encoding/base64"
 	"fabric-go-sdk-sample/model"
 	"fabric-go-sdk-sample/result"
 	"fabric-go-sdk-sample/sdkInit"
@@ -101,7 +103,10 @@ func Invoke(c *gin.Context) {
 		return
 	}
 
-	a := []string{"set", request.Token, request.Token}
+	sum := sha256.Sum256([]byte(request.Data))
+	encoded := base64.StdEncoding.EncodeToString(sum[:])
+
+	a := []string{"set", request.Id, encoded}
 	ret, err := service.App.Set(a)
 	if err != nil {
 		g.Error(result.SERVER_ERROR.FillArgs(err.Error()))
@@ -123,7 +128,7 @@ func Query(c *gin.Context) {
 		return
 	}
 
-	a := []string{"get", request.Token}
+	a := []string{"get", request.Id}
 	response, err := service.App.Get(a)
 	if err != nil {
 		g.Error(result.SERVER_ERROR.FillArgs(err.Error()))
@@ -131,5 +136,5 @@ func Query(c *gin.Context) {
 	}
 	fmt.Println("<--- 查询信息　--->：", response)
 
-	g.Success("")
+	g.Success(response)
 }
