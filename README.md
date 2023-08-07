@@ -31,12 +31,59 @@ git clone https://github.com/tauruswei/fabric-sdk-go-sample
 cd ./fabric-go-sdk-sample/fixtures/ 
 git checkout -b invokeAndQuery-server invokeAndQuery-server
 ```
-
-
 ### 启动项目
 
+#### 修改 config.yaml 文件：节点 ip
 ```
-# 修改 config.yaml 文件：节点 ip 和 crypto-config path
+orderer.example.com:
+    # [Optional] Default: Infer from hostname
+    url: grpcs://192.168.2.155:7050
+```
+```
+peer0.org1.example.com:
+    # this URL is used to send endorsement and query requests
+    # [Optional] Default: Infer from hostname
+    url: grpcs://192.168.2.155:7051
+```
+```
+peer0.org2.example.com:
+    # Replace the port
+    url: grpcs://192.168.2.155:9051
+```
+#### 修改 config.yaml 文件：crypto-config path
+```
+cryptoconfig:
+    path: /Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/crypto-config/
+```
+```
+client:
+    key:
+        path: /Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/crypto-config//peerOrganizations/org1.example.com/users/User1@org1.example.com/tls/client.key
+    cert:
+        path: /Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/crypto-config//peerOrganizations/org1.example.com/users/User1@org1.example.com/tls/client.crt
+```
+```
+Org2:
+    mspid: Org2MSP
+    cryptoPath: /Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/crypto-config/peerOrganizations/org2.example.com/users/{username}@org2.example.com/msp
+```
+```
+tlsCACerts:
+    # Certificate location absolute path
+    path: /Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/crypto-config//ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+```
+```
+tlsCACerts:
+    # Certificate location absolute path
+    path: /Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/crypto-config//ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+```
+```
+tlsCACerts:
+    # Certificate location absolute path
+    path: /Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/crypto-config//ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
+```
+#### 编译启动
+```
 cd .. && go build && ./fabric-go-sdk-sample
 ```
 ```
@@ -94,7 +141,8 @@ LifecycleCheckCCCommitReadiness cc = samplecc, = {map[Org1MSP:true Org2MSP:true]
 post http://127.0.0.1:8081/fabric/invoke
 # 消息体
 {  
-  "token": "1" 
+  "id": "1",
+  "data":"test" 
 } 
 ```
 ```
@@ -107,7 +155,7 @@ post http://127.0.0.1:8081/fabric/invoke
 post http://127.0.0.1:8081/fabric/query
 # 消息体
 {  
-  "token": "1" 
+  "id": "1" 
 } 
 ```
 ```
