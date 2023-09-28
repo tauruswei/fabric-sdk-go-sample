@@ -213,8 +213,8 @@ func GetMysqlConnection() string {
 // 获取日志配置
 func GetLogConfig() *LogConfig {
 	cfg := &LogConfig{
-		Formatter: viper.GetString("server.logging.formatter"),
-		Level:     viper.GetString("server.logging.level"),
+		Formatter: viper.GetString("client.logging.formatter"),
+		Level:     viper.GetString("client.logging.level"),
 	}
 
 	return cfg

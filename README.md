@@ -82,7 +82,11 @@ tlsCACerts:
     # Certificate location absolute path
     path: /Users/fengxiaoxiao/work/go-projects/fabric-sdk-go-sample/fixtures/crypto-config//ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem
 ```
-#### 编译启动
+#### 编译启动网络
+```
+bash restart.sh
+```
+#### 编译启动服务
 ```
 cd .. && go build && ./fabric-go-sdk-sample
 ```
@@ -163,7 +167,7 @@ post http://127.0.0.1:8081/fabric/query
 [GIN] 2023/04/28 - 14:32:25 | 200 |   17.773166ms |   192.168.2.150 | POST     "/fabric/query"
 ```
 
-### 清理项目
+### 清理项目（分支 invokeAndQuery-server）
 
 ```
 cd ./fabric-go-sdk-sample/fixtures/ && bash stop.sh

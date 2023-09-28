@@ -7,29 +7,57 @@ package log
  * @Date: 2021/7/15 下午6:49
  */
 import (
-	//"github.com/hyperledger/fabric-sdk-go/pkg/common/logging"
+	"fmt"
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/op/go-logging"
 	"os"
+	"time"
 )
 
-var logger *logging.Logger = logging.MustGetLogger("default")
+var logger *logging.Logger
 
-func InitLog(format string, level string) {
+func InitLog(format string, level string, rotationTime int, maxAge int) {
 	formatter, err := logging.NewStringFormatter(format)
 	if err != nil {
-		formatter, err = logging.NewStringFormatter("%{color}%{time:2006-01-02 15:04:05.000} %{shortfile:15s} [->] %{shortfunc:-10s} %{level:.4s} %{id:03x}%{color:reset} %{message}")
+		formatter, err = logging.NewStringFormatter("%{color}%{time:2006-01-02 15:04:05.000 CST} [%{module}] %{shortfile:15s} %{shortfunc:-10s} -> %{level:.4s} %{id:03x}%{color:reset} %{message}")
 	}
 	logBackend := logging.NewLogBackend(os.Stdout, "", 0)
-	levelBackend := logging.AddModuleLevel(logBackend)
+	if rotationTime == 0 {
+		rotationTime = 1
+	}
+	if maxAge == 0 {
+		maxAge = 30
+	}
+	fileWriter, err := rotatelogs.New(
+		"log/client-%Y%m%d.log",
+		rotatelogs.WithMaxAge(time.Duration(maxAge)*24*time.Hour),             // 文件最大保存时间
+		rotatelogs.WithRotationTime(time.Duration(rotationTime)*24*time.Hour), // 日志切割时间间隔
+	)
+	if err != nil {
+		fmt.Println(err)
+
+	}
+	logBackendFile := logging.NewLogBackend(fileWriter, "", 0)
+
 	logLevel, err := logging.LogLevel(level)
 	if err != nil {
 		logLevel = logging.DEBUG
 	}
+
+	levelBackend := logging.AddModuleLevel(logBackend)
+
+	levelBackendFile := logging.AddModuleLevel(logBackendFile)
+
 	levelBackend.SetLevel(logLevel, "")
+
+	if logLevel > logging.WARNING {
+		logLevel = logging.WARNING
+	}
+	levelBackendFile.SetLevel(logLevel, "")
 	// backend := logging.NewBackendFormatter(levelBackend, formatter)
-	logging.SetBackend(levelBackend)
+	logging.SetBackend(levelBackend, levelBackendFile)
 	logging.SetFormatter(formatter)
-	//logger = logging.MustGetLogger("default")
+	logger = logging.MustGetLogger("default")
 	logger.ExtraCalldepth = 1
 }
 
