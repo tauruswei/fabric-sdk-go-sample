@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fabric-go-sdk-sample/config"
 	"fabric-go-sdk-sample/log"
 	"fabric-go-sdk-sample/router"
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/unrolled/secure"
 	"strconv"
@@ -17,9 +19,19 @@ import (
 
 const config_yaml = "./config.yaml"
 
+func initLogging() {
+	cfg := config.GetLogConfig()
+
+	fmt.Println(*cfg)
+	log.InitLog(cfg.Formatter, cfg.Level, 7, 7)
+}
+
 func main() {
 
-	//service.NewService(config_yaml)
+	// init logging
+	initLogging()
+
+	config.InitConfig([]string{config_yaml})
 
 	defer func() {
 		if err := recover(); err != nil {

@@ -18,6 +18,9 @@ require (
 	github.com/hyperledger/fabric v1.4.12
 	github.com/hyperledger/fabric-protos-go v0.0.0-20210318103044-13fdee960194
 	github.com/hyperledger/fabric-sdk-go v1.0.0
+	github.com/jonboulle/clockwork v0.4.0 // indirect
+	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
+	github.com/lestrrat-go/strftime v1.0.6 // indirect
 	github.com/op/go-logging v0.0.0-20160315200505-970db520ece7
 	github.com/pkg/errors v0.9.1
 	github.com/prometheus/common v0.6.0
