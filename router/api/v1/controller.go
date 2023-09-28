@@ -3,6 +3,7 @@ package v1
 import (
 	"crypto/sha256"
 	"encoding/base64"
+	"fabric-go-sdk-sample/log"
 	"fabric-go-sdk-sample/model"
 	"fabric-go-sdk-sample/result"
 	"fabric-go-sdk-sample/sdkInit"
@@ -17,6 +18,8 @@ const (
 	cc_name    = "samplecc"
 	cc_version = "1.0.0"
 )
+
+var logger = log.MustGetLogger("controller-loggger")
 
 func Init(c *gin.Context) {
 	g := result.Gin{C: c}
@@ -66,13 +69,13 @@ func Init(c *gin.Context) {
 
 	// create channel and join
 	if err := sdkInit.CreateAndJoinChannel(&info); err != nil {
-		fmt.Println(">> Create channel and join error:", err)
+		logger.Error(result.SERVER_ERROR.FillArgs(">> Create channel and join error:" + err.Error()))
 		os.Exit(-1)
 	}
 
 	// create chaincode lifecycle
 	if err := sdkInit.CreateCCLifecycle(&info, 1, false, sdk); err != nil {
-		fmt.Println(">> create chaincode lifecycle error: %v", err)
+		logger.Error(result.SERVER_ERROR.FillArgs(">> create chaincode lifecycle error:" + err.Error()))
 		os.Exit(-1)
 	}
 
@@ -80,8 +83,7 @@ func Init(c *gin.Context) {
 	fmt.Println(">> 通过链码外部服务设置链码状态......")
 
 	if err := info.InitService(info.ChaincodeID, info.ChannelID, info.Orgs[0], sdk); err != nil {
-
-		fmt.Println("InitService successful")
+		logger.Error(result.SERVER_ERROR.FillArgs(">> InitService unsuccessful error:" + err.Error()))
 		os.Exit(-1)
 	}
 
@@ -109,7 +111,7 @@ func Invoke(c *gin.Context) {
 	a := []string{"set", request.Id, encoded}
 	ret, err := service.App.Set(a)
 	if err != nil {
-		g.Error(result.SERVER_ERROR.FillArgs(err.Error()))
+		logger.Error(result.SERVER_ERROR.FillArgs(err.Error()))
 		return
 	}
 	fmt.Println("<--- 添加信息　--->：", ret)
@@ -131,7 +133,7 @@ func Query(c *gin.Context) {
 	a := []string{"get", request.Id}
 	response, err := service.App.Get(a)
 	if err != nil {
-		g.Error(result.SERVER_ERROR.FillArgs(err.Error()))
+		logger.Error(result.SERVER_ERROR.FillArgs(err.Error()))
 		return
 	}
 	fmt.Println("<--- 查询信息　--->：", response)
