@@ -141,7 +141,7 @@ orderers:
 
   orderer.example.com:
     # [Optional] Default: Infer from hostname
-    url: grpcs://192.168.8.174:7050
+    url: grpcs://192.168.2.150:7050
 
     # these are standard properties defined by the gRPC library
     # they will be passed in as-is to gRPC client constructor
@@ -171,7 +171,7 @@ peers:
   peer0.org1.example.com:
     # this URL is used to send endorsement and query requests
     # [Optional] Default: Infer from hostname
-    url: grpcs://192.168.8.174:7051
+    url: grpcs://192.168.2.150:7051
     grpcOptions:
       ssl-target-name-override: peer0.org1.example.com
       # These parameters should be set in coordination with the keepalive policy on the server,
@@ -193,7 +193,7 @@ peers:
 
   peer0.org2.example.com:
     # Replace the port
-    url: grpcs://192.168.8.174:9051
+    url: grpcs://192.168.2.150:9051
     grpcOptions:
       ssl-target-name-override: peer0.org2.example.com
       keep-alive-time: 0s
